@@ -28,3 +28,35 @@ class Stream:
             self.socket = Telnet(self.host, self.port, self.timeout)
         except OSError:
             print("socket connection error")
+
+    @property
+    def is_connected(self):
+        return self.state == ConnectionState.CONNECTED
+
+    def ensure_connection(self):
+        if self.is_connected:
+            return
+        raise OSError
+
+    def close(self):
+        if not self.is_connected:
+            return
+
+        self.state = ConnectionState.DISCONNECTED
+        self.socket.close()
+
+    def send(self, cmd):
+        self.ensure_connection()
+        try:
+            self.socket.write(cmd.encode("ascii") + b'\n')
+        except OSError:
+            print("Error sending data")
+
+    def read(self):
+        self.ensure_connection()
+        while True:
+            data = self.socket.read_eager()
+            if len(data) == 0:
+                break
+
+            yield data
