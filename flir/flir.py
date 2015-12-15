@@ -9,6 +9,9 @@ class FLIR:
 
     def connect(self):
         self.stream.connect()
+        for line in self.stream.read():
+            print line
+
 
 
 
