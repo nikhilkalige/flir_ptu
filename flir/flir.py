@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import re
 import time
+import math
 from flir.stream import Stream
 
 
@@ -33,9 +34,13 @@ def position_decorator(cls):
             read_string, regex = item["get"]
         else:
             getter_valid = False
-
-        send_string, wait_completion = item["set"]
-
+        
+        if item.get("set"):
+            setter_valid = True
+            send_string, wait_completion = item["set"]
+        else:
+	        setter_valid = False
+        
         def template(self, *args):
             if len(args):
                 cmd = send_string(*args)
@@ -43,8 +48,13 @@ def position_decorator(cls):
                 self.send_command(send_string(*args))
                 if wait_completion:
                     func = getattr(self, key)
-                    while func() != args[0]:
-                        time.sleep(0.1)
+                    while True:
+                        value = func()
+                        # print(type(value), type(args[0]))
+                        if int(value) != args[0]:
+                            time.sleep(.1)
+                        else:
+                            break
             else:
                 if getter_valid:
                     return self.read_command(read_string, regex)
@@ -88,14 +98,14 @@ class FLIR:
 
     def pan_angle(self, angle_value=False):
         if angle_value:
-            self.pan(angle_value/(92.5714/3600))
+            self.pan(math.ceil(angle_value/(92.5714/3600)))
         else:
             data = self.pan()
             return data * (92.5714/3600)
 
     def tile_angle(self, angle_value=False):
         if angle_value:
-            self.pan(angle_value/(46.2857/3600))
+            self.pan((angle_value/(46.2857/3600)))
         else:
             data = self.pan()
             return data * (46.2857/3600)

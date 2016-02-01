@@ -10,8 +10,14 @@ import time
 
 x = FLIR("129.219.136.149", 4000)
 x.connect()
-x.pan(30)
-print(x.pan())
-x.pan_offset(10)
-print(x.pan())
+
+value = True
+#value = False
+
+if value:
+    x.pan(0)
+    print(x.pan())
+else:
+    x.pan_angle(45)
+    print(x.pan())
 x.stream.close()
