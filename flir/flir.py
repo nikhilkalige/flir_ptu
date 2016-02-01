@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import re
+import time
 from flir.stream import Stream
 
 
@@ -17,10 +18,10 @@ cmds = {
                 ]
     },
     "pan_offset": {
-        "set": [lambda pos: "po" + str(pos), True]
+        "get": [lambda pos: "po" + str(pos), True]
     },
     "tilt_offset": {
-        "set": [lambda pos: "to" + str(pos), True]
+        "get": [lambda pos: "to" + str(pos), True]
     }
 }
 
@@ -39,7 +40,11 @@ def position_decorator(cls):
             if len(args):
                 cmd = send_string(*args)
                 print("command", cmd)
-                self.send_command(send_string(*args), wait_completion)
+                self.send_command(send_string(*args))
+                if wait_completion:
+                    func = getattr(self, key)
+                    while func() != args[0]:
+                        time.sleep(0.1)
             else:
                 if getter_valid:
                     return self.read_command(read_string, regex)
@@ -65,11 +70,8 @@ class FLIR:
         # for line in self.stream.read():
         #    print(line)
 
-    def send_command(self, command, wait_completion=False):
+    def send_command(self, command):
         self.stream.send(command)
-        if wait_completion:
-            self.stream.send("A")
-        print(self.stream.read_until("*"))
         print(self.stream.read_until("*"))
 
     def read_command(self, command, regex):
