@@ -11,22 +11,34 @@ logger = logging.getLogger('ptu.ptu')
 
 cmds = {
     "pan": {
-        "set": [lambda pos: "pp" + str(pos), True],
+        "set": [lambda pos: "pp" + str(pos), True, False],
         "get": ["pp",
                 r"\sCurrent Pan position is (?P<expected>\d+)\r\n"
                 ]
     },
     "tilt": {
-        "set": [lambda pos: "tp" + str(pos), True],
+        "set": [lambda pos: "tp" + str(pos), True, False],
         "get": ["tp",
-                r"Current Tilt position is (?P<expected>\d+)\r\n"
+                r"\sCurrent Tilt position is (?P<expected>\d+)\r\n"
                 ]
     },
     "pan_offset": {
-        "set": [lambda pos: "po" + str(pos), True]
+        "set": [lambda pos: "po" + str(pos),
+                True,
+                lambda self, pos: int(self.pan()) + pos
+                ],
+        "get": ["po",
+                r"\sTarget Pan position is (?P<expected>\d+)\r\n"
+                ]
     },
     "tilt_offset": {
-        "set": [lambda pos: "to" + str(pos), True]
+        "set": [lambda pos: "to" + str(pos),
+                True,
+                lambda self, pos: int(self.tilt()) + pos
+                ],
+        "get": ["to",
+                r"\sTarget Tilt position is (?P<expected>\d+)\r\n"
+                ]
     }
 }
 
@@ -40,7 +52,7 @@ def position_decorator(cls):
             getter_valid = False
 
         if item.get("set"):
-            send_string, wait_completion = item["set"]
+            send_string, wait_completion, value_mod_func = item["set"]
 
         def template(self, *args):
             if len(args):
@@ -49,10 +61,14 @@ def position_decorator(cls):
                 self.send_command(send_string(*args))
                 if wait_completion:
                     func = getattr(self, key)
+                    if value_mod_func:
+                        checking_value = value_mod_func(self, *args)
+                    else:
+                        checking_value = args[0]
                     while True:
                         value = func()
                         logger.debug("Read value wait: ", value)
-                        if int(value) != args[0]:
+                        if int(value) != checking_value:
                             time.sleep(.1)
                         else:
                             break
