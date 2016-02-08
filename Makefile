@@ -35,7 +35,7 @@ clean-test:
 	rm -fr htmlcov/
 
 lint:
-	flake8 flir tests
+	flake8 flir_ptu tests
 
 test:
 	py.test tests
@@ -44,13 +44,13 @@ test-all:
 	tox
 
 coverage:
-	py.test --cov flir --cov-report html tests
+	py.test --cov flir_ptu --cov-report html tests
 	open htmlcov/index.html
 
 docs:
-	rm -f docs/flir.rst
+	rm -f docs/flir_ptu.rst
 	rm -f docs/modules.rst
-	sphinx-apidoc -o docs/ flir
+	sphinx-apidoc -o docs/ flir_ptu
 	$(MAKE) -C docs clean
 	$(MAKE) -C docs html
 	open docs/_build/html/index.html

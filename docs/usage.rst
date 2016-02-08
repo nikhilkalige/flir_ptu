@@ -2,6 +2,6 @@
 Usage
 ========
 
-To use flir in a project::
+To use flir_ptu in a project::
 
-    import flir
+    import ptu

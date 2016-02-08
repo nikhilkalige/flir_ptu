@@ -1,4 +1,4 @@
-# Install flir itself
+# Install flir_ptu itself
 -e .
 
 # Install our development requirements

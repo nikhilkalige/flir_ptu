@@ -19,23 +19,23 @@ requirements = [
 ]
 
 setup(
-    name='flir',
+    name='flir_ptu',
     version='0.1.0',
     description="Python Boilerplate contains all the boilerplate you need to create a Python package.",
     long_description=readme + '\n\n' + history,
     author="PlanetaryPy Developers",
     author_email='contact@planetarypy.com',
-    url='https://github.com/planetarypy/flir',
+    url='https://github.com/planetarypy/flir_ptu',
     packages=[
-        'flir',
+        'flir_ptu',
     ],
-    package_dir={'flir':
-                 'flir'},
+    package_dir={'ptu':
+                 'ptu'},
     include_package_data=True,
     install_requires=requirements,
     license="BSD",
     zip_safe=False,
-    keywords='flir',
+    keywords='flir_ptu',
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Intended Audience :: Developers',

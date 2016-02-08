@@ -2,11 +2,11 @@
 import re
 import time
 import math
-from flir.stream import Stream
+from ptu.stream import Stream
 import logging
 
 
-logger = logging.getLogger('flir.flir')
+logger = logging.getLogger('ptu.ptu')
 
 
 cmds = {

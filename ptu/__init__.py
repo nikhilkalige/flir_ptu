@@ -8,7 +8,7 @@ __version__ = '0.1.0'
 import logging
 
 
-logger = logging.getLogger('flir')
+logger = logging.getLogger('ptu')
 handler = logging.StreamHandler()
 formatter = logging.Formatter('%(levelname)s:%(name)s:-%(message)s')
 handler.setFormatter(formatter)
