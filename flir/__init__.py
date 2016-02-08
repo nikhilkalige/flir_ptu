@@ -3,3 +3,13 @@
 __author__ = 'PlanetaryPy Developers'
 __email__ = 'contact@planetarypy.com'
 __version__ = '0.1.0'
+
+
+import logging
+
+
+logger = logging.getLogger('flir')
+handler = logging.StreamHandler()
+formatter = logging.Formatter('%(levelname)s:%(name)s:-%(message)s')
+handler.setFormatter(formatter)
+logger.addHandler(handler)

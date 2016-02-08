@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 from telnetlib import Telnet
 from enum import IntEnum
+import logging
+
+
+logger = logging.getLogger('flir.stream')
 
 
 class ConnectionState(IntEnum):
@@ -22,7 +26,7 @@ class Stream:
 
     def connect(self):
         if self.testing:
-            print("Connected")
+            logger.debug("Connected")
             self.state = ConnectionState.CONNECTED
             return
 
@@ -34,9 +38,9 @@ class Stream:
             self.socket = Telnet(self.host, self.port, self.timeout)
             data = self.socket.read_until(str.encode("*"))
             self.state = ConnectionState.CONNECTED
-            print(data)
+            logger.info(data)
         except OSError:
-            print("socket connection error")
+            logger.critical("Socket connection error")
 
     @property
     def is_connected(self):
@@ -49,7 +53,7 @@ class Stream:
 
     def close(self):
         if self.testing:
-            print("Closed")
+            logger.debug("Closed")
             return
 
         if not self.is_connected:
@@ -60,14 +64,14 @@ class Stream:
 
     def send(self, cmd):
         if self.testing:
-            print(cmd)
+            logger.debug(cmd)
             return
 
         self.ensure_connection()
         try:
             self.socket.write(cmd.encode("ascii") + b'\n')
         except OSError:
-            print("Error sending data")
+            logger.error("Error sending data")
 
     def read(self):
         self.ensure_connection()
@@ -80,7 +84,7 @@ class Stream:
 
     def read_until(self, string):
         if self.testing:
-            print("reading")
+            logger.debug("Reading")
             return
 
         self.ensure_connection()
