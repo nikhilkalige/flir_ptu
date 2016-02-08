@@ -71,7 +71,7 @@ def position_decorator(cls):
 
 
 @position_decorator
-class FLIR:
+class PTU:
 
     def __init__(self, host, port, debug=False):
         self.stream = Stream(host, port, testing=debug)

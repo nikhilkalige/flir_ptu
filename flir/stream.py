@@ -4,7 +4,7 @@ from enum import IntEnum
 import logging
 
 
-logger = logging.getLogger('flir.stream')
+logger = logging.getLogger('ptu.stream')
 
 
 class ConnectionState(IntEnum):
