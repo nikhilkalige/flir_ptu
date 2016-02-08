@@ -4,7 +4,7 @@ from enum import IntEnum
 import logging
 
 
-logger = logging.getLogger('ptu.stream')
+logger = logging.getLogger(__name__)
 
 
 class ConnectionState(IntEnum):
@@ -63,8 +63,8 @@ class Stream:
         self.socket.close()
 
     def send(self, cmd):
+        logger.debug(cmd)
         if self.testing:
-            logger.debug(cmd)
             return
 
         self.ensure_connection()
