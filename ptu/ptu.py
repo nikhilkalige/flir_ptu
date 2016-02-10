@@ -39,13 +39,13 @@ cmds = {
     "pan": {
         "set": [lambda pos: "pp" + str(pos), True, False],
         "get": ["pp",
-                r"\sCurrent Pan position is (?P<expected>\d+)\r\n"
+                r"\sCurrent Pan position is (?P<expected>-?\d+)\r\n"
                 ]
     },
     "tilt": {
         "set": [lambda pos: "tp" + str(pos), True, False],
         "get": ["tp",
-                r"\sCurrent Tilt position is (?P<expected>\d+)\r\n"
+                r"\sCurrent Tilt position is (?P<expected>-?\d+)\r\n"
                 ]
     },
     "pan_offset": {
@@ -54,7 +54,7 @@ cmds = {
                 lambda self, pos: int(self.pan()) + pos
                 ],
         "get": ["po",
-                r"\sTarget Pan position is (?P<expected>\d+)\r\n"
+                r"\sTarget Pan position is (?P<expected>-?\d+)\r\n"
                 ]
     },
     "tilt_offset": {
@@ -63,7 +63,7 @@ cmds = {
                 lambda self, pos: int(self.tilt()) + pos
                 ],
         "get": ["to",
-                r"\sTarget Tilt position is (?P<expected>\d+)\r\n"
+                r"\sTarget Tilt position is (?P<expected>-?\d+)\r\n"
                 ]
     }
 }
@@ -137,15 +137,15 @@ class PTU:
             logger.error("Error parsing regex")
 
     def pan_angle(self, angle_value=False):
-        if angle_value:
+        if type(angle_value) !=  bool:
             self.pan(math.ceil(angle_value/(92.5714/3600)))
         else:
             data = self.pan()
             return data * (92.5714/3600)
 
-    def tile_angle(self, angle_value=False):
-        if angle_value:
-            self.pan((angle_value/(46.2857/3600)))
+    def tilt_angle(self, angle_value=False):
+        if type(angle_value) != bool:
+            self.tilt(math.ceil(angle_value/(46.2857/3600)))
         else:
-            data = self.pan()
+            data = self.tilt()
             return data * (46.2857/3600)
