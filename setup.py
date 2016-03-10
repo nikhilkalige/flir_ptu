@@ -29,8 +29,8 @@ setup(
     packages=[
         'flir_ptu',
     ],
-    package_dir={'ptu':
-                 'ptu'},
+    package_dir={'flir_ptu':
+                 'flir_ptu'},
     include_package_data=True,
     install_requires=requirements,
     license="BSD",

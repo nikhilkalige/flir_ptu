@@ -1,4 +1,4 @@
-from ptu.ptu import PTU
+from flir_ptu.ptu import PTU
 import logging
 
 
