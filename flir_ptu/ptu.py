@@ -2,7 +2,7 @@
 import re
 import time
 import math
-from ptu.stream import Stream
+from flir_ptu.stream import Stream
 import logging
 
 
