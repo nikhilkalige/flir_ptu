@@ -141,11 +141,11 @@ class PTU:
             self.pan(math.ceil(angle_value/(92.5714/3600)))
         else:
             data = self.pan()
-            return data * (92.5714/3600)
+            return round(float(data) * (92.5714/3600), 2)
 
     def tilt_angle(self, angle_value=False):
         if type(angle_value) != bool:
             self.tilt(math.ceil(angle_value/(46.2857/3600)))
         else:
             data = self.tilt()
-            return data * (46.2857/3600)
+            return round(float(data) * (46.2857/3600), 2)
